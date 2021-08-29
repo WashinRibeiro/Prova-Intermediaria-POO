@@ -1,4 +1,6 @@
 package programa;
+
+import java.util.InputMismatchException;
 import java.io.IOException;
 import java.util.Scanner;
 import classes.Aeronave;
@@ -6,14 +8,17 @@ import classes.Piloto;
 
 public class AppPilotos {
     public static void main(String[] args) throws InterruptedException, IOException {
+        
         final int MAX_ELEMENTOS = 2;
-        int opcao, qtdCadastrados = 0;
-
-        Piloto[] piloto;
-        piloto = new Piloto[MAX_ELEMENTOS];
-
-        Aeronave[] nave = new Aeronave[MAX_ELEMENTOS]; //é pra ter ?
+        int opcao = 0; 
+        int qtdCadastrados = 0;
         Scanner in = new Scanner(System.in);
+
+        Piloto[] piloto; //Declaração dos vetores, para poder reinstanciar a qualquer momento se for preciso
+        Aeronave[] nave;
+
+        piloto = new Piloto[MAX_ELEMENTOS];
+        nave = new Aeronave[MAX_ELEMENTOS];        
         
         
         do {
@@ -25,7 +30,12 @@ public class AppPilotos {
             System.out.println("0 - Sair");
             System.out.print("Opção: ");
 
-            opcao = in.nextInt();
+            try {
+                opcao = in.nextInt();
+            } catch (InputMismatchException ex) {
+                System.out.println("Por favor, digite apenas números!!");
+            }
+
             in.nextLine(); // Tira o ENTER que ficou na entrada na instrução anterior
 
             if (opcao == 1) {
@@ -93,10 +103,13 @@ public class AppPilotos {
             } else if (opcao == 4) {
                 System.out.print("Entre com a nova capacidade que deseja: ");
                 int capacidadeAtual = in.nextInt();
-
+                Piloto[] armazena = new Piloto[qtdCadastrados];
+    
                 if (capacidadeAtual > MAX_ELEMENTOS) {
+                    armazena = piloto;                        
                     piloto = new Piloto[capacidadeAtual];
-                    System.out.println("Capacidade Ampliada com sucesso!");
+                    piloto = armazena;
+                    System.out.printf("Capacidade Ampliada com sucesso para %d!", capacidadeAtual);
                    
                 } else {
                     System.out.println("Para ampliar a capacidade, o valor informando deve ser maior do que a capacidade já existente");

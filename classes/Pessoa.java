@@ -3,8 +3,7 @@ package classes;
 import java.text.ParseException;
 import javax.swing.text.MaskFormatter;
 
-
-public class Pessoa {
+public abstract class Pessoa {
     protected String nome, cpf;
 
     private String formata(String cpf) {
