@@ -1,5 +1,8 @@
+package programa;
 import java.io.IOException;
 import java.util.Scanner;
+import classes.Aeronave;
+import classes.Piloto;
 
 public class AppPilotos {
     public static void main(String[] args) throws InterruptedException, IOException {

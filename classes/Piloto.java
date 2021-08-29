@@ -1,3 +1,5 @@
+package classes;
+
 public class Piloto extends Pessoa {
     private String breve;
 
