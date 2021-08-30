@@ -9,7 +9,7 @@ import classes.Piloto;
 public class AppPilotos {
     public static void main(String[] args) throws InterruptedException, IOException {
         
-        final int MAX_ELEMENTOS = 2;
+        int MAX_ELEMENTOS = 20;
         int opcao = 0; 
         int qtdCadastrados = 0;
         Scanner in = new Scanner(System.in);
@@ -19,8 +19,7 @@ public class AppPilotos {
 
         piloto = new Piloto[MAX_ELEMENTOS];
         nave = new Aeronave[MAX_ELEMENTOS];        
-        
-        
+                
         do {
             System.out.println("\n****\nMENU\n****\n");
             System.out.println("1 - Cadastrar piloto");
@@ -43,7 +42,6 @@ public class AppPilotos {
                 if (qtdCadastrados == MAX_ELEMENTOS) {
                     System.out.println("\nNão há espaço para cadastrar novos pilotos.");
                     voltarMenu(in);
-                    continue;
                 }
 
                 //Cadastre seu piloto aqui
@@ -54,20 +52,29 @@ public class AppPilotos {
                     System.out.print("\nNome: ");
                     piloto[qtdCadastrados].setNome(in.nextLine()); //Colocar esse cara para ser o piloto que pilota a nave
 
-                    System.out.print("CPF: ");
-                    piloto[qtdCadastrados].setCpf(in.nextLine());
+                    System.out.print("CPF do Piloto (###.###.###-##): ");
+                    boolean cadastrado = false; // Validar se o cpf esta corretamente digitado
+                    do {
+                        try {
+                            piloto[qtdCadastrados].setCpf(in.nextLine());
+                            cadastrado = true;
+                        } catch (InputMismatchException ex) {
+                            System.out.println(ex.getMessage());
+                            System.out.print("Digite Novamente: ");
+    
+                        }
+                    } while (cadastrado == false);
                     
                     System.out.print("Brevê: ");
                     piloto[qtdCadastrados].setBreve(in.nextLine());
 
-                    System.out.print("Número de série da Aeronave que o piloto pilota: ");
+                    System.out.print("Número de série da Aeronave: ");
                     nave[qtdCadastrados].setNumSerie(in.nextLine());
 
                     qtdCadastrados++;
-                    voltarMenu(in);        
-                    }
+                }
 
-                System.out.println("\nPiloto cadastrado com sucesso.");
+                System.out.println("\nPILOTO CADASTRADO COM SUCESSO");
                 voltarMenu(in);
 
             } else if (opcao == 2) {
@@ -75,17 +82,15 @@ public class AppPilotos {
                 if (qtdCadastrados == 0) {
                     System.out.println("\nNão há motoristas cadastrados para exibir.");
                     voltarMenu(in);
-                    continue;
                 }
 
                 // Mostrar pilotos cadastrados
                 else if (qtdCadastrados > 0) {
                     System.out.println("\n-------------LISTA DE PILOTOS CADASTRADOS-------------");
                     for (int i = 0; i < qtdCadastrados; i++) {                         
-                        System.out.printf("\nPiloto nº%d: %s - CPF: %s - Brevê: %s", (i+1), piloto[i].getNome(), piloto[i].getCpf(), piloto[i].getBreve());
+                        System.out.printf("\nPiloto nº%d >>> Nome: %s - CPF: %s - Brevê: %s - Aeronave: %s", (i + 1), piloto[i].getNome(), piloto[i].getCpf(), piloto[i].getBreve(), nave[i].getNumSerie());
                     }
                 }
-
 
             } else if (opcao == 3) {
                 System.out.print("Digite o CPF que deseja buscar: ");
@@ -98,19 +103,14 @@ public class AppPilotos {
                         System.out.printf("\nCPF não corresponde a nenhum piloto cadastrado.");
                     }
                 }
-                           
-
+            
             } else if (opcao == 4) {
                 System.out.print("Entre com a nova capacidade que deseja: ");
                 int capacidadeAtual = in.nextInt();
-                Piloto[] armazena = new Piloto[qtdCadastrados];
     
                 if (capacidadeAtual > MAX_ELEMENTOS) {
-                    armazena = piloto;                        
-                    piloto = new Piloto[capacidadeAtual];
-                    piloto = armazena;
-                    System.out.printf("Capacidade Ampliada com sucesso para %d!", capacidadeAtual);
-                   
+                    MAX_ELEMENTOS = capacidadeAtual;                        
+                    System.out.printf("Capacidade Ampliada com sucesso para %d!", MAX_ELEMENTOS); 
                 } else {
                     System.out.println("Para ampliar a capacidade, o valor informando deve ser maior do que a capacidade já existente");
                 } 
