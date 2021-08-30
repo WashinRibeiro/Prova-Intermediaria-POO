@@ -110,7 +110,7 @@ public class AppPilotos {
     
                 if (capacidadeAtual > MAX_ELEMENTOS) {
                     MAX_ELEMENTOS = capacidadeAtual;                        
-                    System.out.printf("Capacidade Ampliada com sucesso para %d!", MAX_ELEMENTOS); 
+                    System.out.printf("Capacidade ampliada com sucesso para %d!", MAX_ELEMENTOS); 
                 } else {
                     System.out.println("Para ampliar a capacidade, o valor informando deve ser maior do que a capacidade já existente");
                 } 
