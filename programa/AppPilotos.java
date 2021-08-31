@@ -3,6 +3,7 @@ package programa;
 import java.util.InputMismatchException;
 import java.io.IOException;
 import java.util.Scanner;
+
 import classes.Aeronave;
 import classes.Piloto;
 
@@ -14,7 +15,7 @@ public class AppPilotos {
         int qtdCadastrados = 0;
         Scanner in = new Scanner(System.in);
 
-        Piloto[] piloto; //Declaração dos vetores, para poder reinstanciar a qualquer momento se for preciso
+        Piloto[] piloto; 
         Aeronave[] nave;
 
         piloto = new Piloto[MAX_ELEMENTOS];
@@ -35,26 +36,25 @@ public class AppPilotos {
                 System.out.println("Por favor, digite apenas números!!");
             }
 
-            in.nextLine(); // Tira o ENTER que ficou na entrada na instrução anterior
+            in.nextLine();
 
             if (opcao == 1) {
-                // Se não tem mais espaço no vetor, caio fora
+                
                 if (qtdCadastrados == piloto.length) {
                     System.out.println("\nNão há espaço para cadastrar novos pilotos");
                     voltarMenu(in);
                     continue;
                 }
 
-                //Cadastre seu piloto aqui
                 else if (qtdCadastrados < piloto.length) {
                     piloto[qtdCadastrados] = new Piloto();
                     nave[qtdCadastrados] = new Aeronave();
 
                     System.out.print("\nNome: ");
-                    piloto[qtdCadastrados].setNome(in.nextLine()); //Colocar esse cara para ser o piloto que pilota a nave
+                    piloto[qtdCadastrados].setNome(in.nextLine()); 
 
                     System.out.print("CPF do Piloto (###.###.###-##): ");
-                    boolean cadastrado = false; // Validar se o cpf esta corretamente digitado
+                    boolean cadastrado = false;
                     do {
                         try {
                             piloto[qtdCadastrados].setCpf(in.nextLine());
@@ -79,13 +79,12 @@ public class AppPilotos {
                 voltarMenu(in);
 
             } else if (opcao == 2) {
-                // Se não tem ninguém cadastrado no vetor, caio fora
+                
                 if (qtdCadastrados == 0) {
                     System.out.println("\nNão há motoristas cadastrados para exibir.");
                     voltarMenu(in);
                 }
 
-                // Mostrar pilotos cadastrados
                 else if (qtdCadastrados > 0) {
                     System.out.println("\n-------------LISTA DE PILOTOS CADASTRADOS-------------");
                     for (int i = 0; i < qtdCadastrados; i++) {                         
@@ -97,7 +96,7 @@ public class AppPilotos {
 
             } else if (opcao == 3) {
                 System.out.print("Digite o CPF que deseja buscar: ");
-                String cpf = in.nextLine(); //que vai ser pedido para o usuário
+                String cpf = in.nextLine(); 
                 
                 for (int i = 0; i < qtdCadastrados; i++) {
                     if (cpf.equals(piloto[i].getCpf())) {
@@ -118,16 +117,15 @@ public class AppPilotos {
                 do {
                     try {
                         novaCapacidade = in.nextInt();
-                        in.nextLine(); // Remove o entre preso no Buffer
+                        in.nextLine(); 
     
                         if(novaCapacidade <= piloto.length) {
-                            System.out.printf("Para aumentar a capacidade, o tamanho informado necessita ser maior do que %d!! ", piloto.length);
+                            System.out.printf("Para aumentar a capacidade, o tamanho informado precisa ser maior do que %d!! ", piloto.length);
                             System.out.print("\nDigite Novamente: ");
     
                         } else {
                             cadastrado = true;
                         }
-    
                             
                     } catch (InputMismatchException ex) {
                         System.out.println("Por favor, digite apenas números!! ");
