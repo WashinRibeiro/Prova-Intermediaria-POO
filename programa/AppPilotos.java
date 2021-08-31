@@ -9,7 +9,7 @@ import classes.Piloto;
 public class AppPilotos {
     public static void main(String[] args) throws InterruptedException, IOException {
         
-        int MAX_ELEMENTOS = 20;
+        final int MAX_ELEMENTOS = 2;
         int opcao = 0; 
         int qtdCadastrados = 0;
         Scanner in = new Scanner(System.in);
@@ -39,13 +39,14 @@ public class AppPilotos {
 
             if (opcao == 1) {
                 // Se não tem mais espaço no vetor, caio fora
-                if (qtdCadastrados == MAX_ELEMENTOS) {
-                    System.out.println("\nNão há espaço para cadastrar novos pilotos.");
+                if (qtdCadastrados == piloto.length) {
+                    System.out.println("\nNão há espaço para cadastrar novos pilotos");
                     voltarMenu(in);
+                    continue;
                 }
 
                 //Cadastre seu piloto aqui
-                else if (qtdCadastrados < MAX_ELEMENTOS) {
+                else if (qtdCadastrados < piloto.length) {
                     piloto[qtdCadastrados] = new Piloto();
                     nave[qtdCadastrados] = new Aeronave();
 
@@ -92,33 +93,75 @@ public class AppPilotos {
                     }
                 }
 
+                voltarMenu(in);
+
             } else if (opcao == 3) {
                 System.out.print("Digite o CPF que deseja buscar: ");
                 String cpf = in.nextLine(); //que vai ser pedido para o usuário
                 
                 for (int i = 0; i < qtdCadastrados; i++) {
                     if (cpf.equals(piloto[i].getCpf())) {
-                        System.out.printf("\nCPF correspondente ao piloto nº%d: %s - Brevê: %s", (i+1), piloto[i].getNome(), piloto[i].getBreve());
+                        System.out.printf("\nCPF correspondente ao piloto nº%d: %s - Brevê: %s - Aeronave: %s", (i+1), piloto[i].getNome(), piloto[i].getBreve(), nave[i].getNumSerie());
                     } else if (i == qtdCadastrados) {
                         System.out.printf("\nCPF não corresponde a nenhum piloto cadastrado.");
                     }
                 }
+
+                voltarMenu(in);
             
             } else if (opcao == 4) {
-                System.out.print("Entre com a nova capacidade que deseja: ");
-                int capacidadeAtual = in.nextInt();
+
+                int novaCapacidade = 0;
+                boolean cadastrado = false;
+                System.out.print("Entre com a nova capacidade desejada: ");
+                    
+                do {
+                    try {
+                        novaCapacidade = in.nextInt();
+                        in.nextLine(); // Remove o entre preso no Buffer
     
-                if (capacidadeAtual > MAX_ELEMENTOS) {
-                    MAX_ELEMENTOS = capacidadeAtual;                        
-                    System.out.printf("Capacidade ampliada com sucesso para %d!", MAX_ELEMENTOS); 
-                } else {
-                    System.out.println("Para ampliar a capacidade, o valor informando deve ser maior do que a capacidade já existente");
-                } 
-            } 
+                        if(novaCapacidade <= piloto.length) {
+                            System.out.printf("Para aumentar a capacidade, o tamanho informado necessita ser maior do que %d!! ", piloto.length);
+                            System.out.print("\nDigite Novamente: ");
+    
+                        } else {
+                            cadastrado = true;
+                        }
+    
+                            
+                    } catch (InputMismatchException ex) {
+                        System.out.println("Por favor, digite apenas números!! ");
+                        in.nextLine(); 
+                            
+                    } 
+                } while(!cadastrado);
+    
+                Piloto[] armazenarPiloto = new Piloto[piloto.length];
+                Aeronave[] armazenarAeronave = new Aeronave[nave.length];
+    
+                armazenarPiloto = piloto;
+                armazenarAeronave = nave;
+    
+                piloto = new Piloto[novaCapacidade];
+                nave = new Aeronave[novaCapacidade];
+    
+                for (int i = 0; i < qtdCadastrados; i++) {
+                    piloto[i] = new Piloto();
+                    piloto[i] = armazenarPiloto[i];
+                }
+    
+                for (int i = 0; i < qtdCadastrados; i++) {
+                    nave[i] = new Aeronave();
+                    nave[i] = armazenarAeronave[i];
+                }
+    
+                System.out.println("\n CAPACIDADE ALTERADA COM SUCESSO!! ");
+                voltarMenu(in);
             
-            else if (opcao != 0) {
+            } else if (opcao != 0) {
                 System.out.println("\nOpção inválida!");
             }
+               
         } while (opcao != 0);
 
         System.out.println("Fim do programa!");
