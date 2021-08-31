@@ -10,7 +10,7 @@ import classes.Piloto;
 public class AppPilotos {
     public static void main(String[] args) throws InterruptedException, IOException {
         
-        final int MAX_ELEMENTOS = 2;
+        final int MAX_ELEMENTOS = 20;
         int opcao = 0; 
         int qtdCadastrados = 0;
         Scanner in = new Scanner(System.in);
@@ -86,27 +86,32 @@ public class AppPilotos {
                 }
 
                 else if (qtdCadastrados > 0) {
-                    System.out.println("\n-------------LISTA DE PILOTOS CADASTRADOS-------------");
+                    System.out.println("\n-------------------LISTA DE PILOTOS CADASTRADOS-------------------");
                     for (int i = 0; i < qtdCadastrados; i++) {                         
                         System.out.printf("\nPiloto nº%d >>> Nome: %s - CPF: %s - Brevê: %s - Aeronave: %s", (i + 1), piloto[i].getNome(), piloto[i].getCpf(), piloto[i].getBreve(), nave[i].getNumSerie());
                     }
+                    voltarMenu(in);
                 }
 
-                voltarMenu(in);
-
             } else if (opcao == 3) {
+ 
+                if(qtdCadastrados == 0){
+                    System.out.println("Não há nenhum piloto cadastrado para buscar!!");
+                    voltarMenu(in);
+                    continue;
+                }
+
                 System.out.print("Digite o CPF que deseja buscar: ");
                 String cpf = in.nextLine(); 
                 
                 for (int i = 0; i < qtdCadastrados; i++) {
                     if (cpf.equals(piloto[i].getCpf())) {
-                        System.out.printf("\nCPF correspondente ao piloto nº%d: %s - Brevê: %s - Aeronave: %s", (i+1), piloto[i].getNome(), piloto[i].getBreve(), nave[i].getNumSerie());
-                    } else if (i == qtdCadastrados) {
-                        System.out.printf("\nCPF não corresponde a nenhum piloto cadastrado.");
+                        System.out.printf("\nCPF correspondente ao piloto nº%d >> Nome: %s - Brevê: %s - Aeronave: %s", (i+1), piloto[i].getNome(),piloto[i].getBreve(), nave[i].getNumSerie());
+                    } else {
+                        System.out.println("O CPF não corresponde a nenhum piloto cadastrado.");
+                        voltarMenu(in);
                     }
-                }
-
-                voltarMenu(in);
+                } 
             
             } else if (opcao == 4) {
 
@@ -115,23 +120,17 @@ public class AppPilotos {
                 System.out.print("Entre com a nova capacidade desejada: ");
                     
                 do {
-                    try {
-                        novaCapacidade = in.nextInt();
-                        in.nextLine(); 
+                    novaCapacidade = in.nextInt();
+                    in.nextLine(); 
     
-                        if(novaCapacidade <= piloto.length) {
-                            System.out.printf("Para aumentar a capacidade, o tamanho informado precisa ser maior do que %d!! ", piloto.length);
-                            System.out.print("\nDigite Novamente: ");
+                    if(novaCapacidade <= piloto.length) {
+                        System.out.printf("Para aumentar a capacidade, o tamanho informado precisa ser maior do que %d!! ", piloto.length);
+                        System.out.print("\nDigite Novamente: ");
     
-                        } else {
-                            cadastrado = true;
-                        }
-                            
-                    } catch (InputMismatchException ex) {
-                        System.out.println("Por favor, digite apenas números!! ");
-                        in.nextLine(); 
-                            
-                    } 
+                    } else {
+                        cadastrado = true;
+                    }
+                             
                 } while(!cadastrado);
     
                 Piloto[] armazenarPiloto = new Piloto[piloto.length];
@@ -153,7 +152,7 @@ public class AppPilotos {
                     nave[i] = armazenarAeronave[i];
                 }
     
-                System.out.println("\n CAPACIDADE ALTERADA COM SUCESSO!! ");
+                System.out.println("\nCAPACIDADE ALTERADA COM SUCESSO!! ");
                 voltarMenu(in);
             
             } else if (opcao != 0) {
